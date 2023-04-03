@@ -17,6 +17,8 @@
 
   <ItemGroup>
     <Folder Include="Controllers\" />
+    <Folder Include="Configurations\" />
+    <Folder Include="ViewModels\" />
   </ItemGroup>
 
 </Project>
