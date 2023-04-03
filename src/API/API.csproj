@@ -7,8 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Controllers\ValuesController.cs" />
     <Compile Remove="Controllers\WeatherForecastController.cs" />
-    <Compile Remove="ViewModels\CustomerViewModel.cs" />
     <Compile Remove="WeatherForecast.cs" />
   </ItemGroup>
 
@@ -18,13 +18,17 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.15" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.15" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.15">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.13" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
     <Folder Include="SQLite\" />
-    <Folder Include="ViewModels\" />
   </ItemGroup>
 
   <ItemGroup>

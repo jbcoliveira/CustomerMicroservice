@@ -13,6 +13,9 @@ namespace API
 
         public void ConfigureServices(IServiceCollection services)
         {
+
+            services.AddAutoMapper(typeof(Startup));
+
             services.AddControllers();
 
             services.AddDbContextConfig(Configuration);
