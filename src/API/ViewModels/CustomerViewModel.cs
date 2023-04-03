@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Business.Models
+namespace API.ViewModels
 {
-    public class Customer : BaseEntity
+    public class CustomerViewModel
     {
         public int Id { get; set; }
         public string FirstName { get; set; }

@@ -20,6 +20,8 @@ namespace API
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
+
+            services.ResolveDependencies();
         }
 
         public void Configure(WebApplication app, IWebHostEnvironment env)
