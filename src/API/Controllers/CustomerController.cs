@@ -1,4 +1,4 @@
-﻿using Business.Interfaces.Services;
+﻿using Business.Interfaces.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -10,19 +10,19 @@ namespace API.Controllers
     public class CustomerController : ControllerBase
     {
 
-        private ICustomerService _customerService { get; set;}
+        private ICustomerRepository _customerRepository { get; set;}
 
-        public CustomerController(ICustomerService customerService)
+        public CustomerController(ICustomerRepository customerRepository)
         {
-            _customerService = customerService;
+            _customerRepository = customerRepository;
         }
 
 
         // GET: api/<CustomerController>
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IActionResult Get()
         {
-            return new string[] { "value1", "value2" };
+            return Ok(new string[] { "value1", "value2" });
         }
 
         // GET api/<CustomerController>/5

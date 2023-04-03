@@ -8,6 +8,14 @@
 
   <ItemGroup>
     <Compile Remove="Class1.cs" />
+    <Compile Remove="Interfaces\Services\ICustomerService.cs" />
+    <Compile Remove="Interfaces\Services\IService.cs" />
+    <Compile Remove="Services\CustomerService.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Interfaces\Services\" />
+    <Folder Include="Services\" />
   </ItemGroup>
 
 </Project>
