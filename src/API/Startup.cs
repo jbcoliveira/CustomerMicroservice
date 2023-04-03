@@ -1,5 +1,4 @@
 ﻿using API.Configurations;
-using Microsoft.AspNetCore.Http.Features;
 
 namespace API
 {

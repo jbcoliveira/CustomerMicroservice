@@ -1,12 +1,6 @@
 ﻿using Business.Models;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Data.Context
 {
@@ -31,8 +25,6 @@ namespace Data.Context
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<Customer>().ToTable("Customers");
-
-
         }
     }
 }

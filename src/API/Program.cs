@@ -13,4 +13,3 @@ public class Program
         startup.Configure(app, builder.Environment);
     }
 }
-

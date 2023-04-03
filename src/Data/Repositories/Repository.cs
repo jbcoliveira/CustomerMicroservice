@@ -5,16 +5,17 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Data.Repositories
 {
-    public abstract class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEntity, new ()
+    public abstract class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEntity, new()
     {
         protected readonly ApplicationDbContext Db;
-        protected readonly DbSet<TEntity> DbSet;    
+        protected readonly DbSet<TEntity> DbSet;
 
         protected Repository(ApplicationDbContext db)
         {
             Db = db;
             DbSet = db.Set<TEntity>();
         }
+
         public async Task Add(TEntity entity)
         {
             DbSet.Add(entity);
@@ -45,7 +46,6 @@ namespace Data.Repositories
 
         public void Dispose()
         {
-            
         }
     }
 }
