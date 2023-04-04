@@ -1,5 +1,7 @@
-﻿using API.Controllers;
+﻿using API.Configurations;
+using API.Controllers;
 using API.ViewModels;
+using AutoMapper;
 using Business.Interfaces.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
@@ -11,21 +13,21 @@ namespace Tests.UnitTests
     {
         private readonly Mock<ICustomerRepository> _mockCustomerRepository;
         private readonly CustomerController _controller;
-
+        private IMapper _mapper;
         public CustomerControllerTests()
         {
-
+            AutoMapperInit();
             _mockCustomerRepository = new Mock<ICustomerRepository>();
-            _controller = new CustomerController(_mockCustomerRepository.Object);
+            _controller = new CustomerController(_mockCustomerRepository.Object,_mapper);
         }
 
         [Test]
-        public void Get_ActionExecutes_ReturnsOKStatusCodeResult()
+        public async Task Get_ActionExecutes_ReturnsOKStatusCodeResultAsync()
         {
             //Arrange
 
             //Act
-            var result = _controller.Get();
+            var result = await _controller.GetAsync();
             var statusCodeResult = result as OkObjectResult;
 
             //Assert
@@ -174,5 +176,15 @@ namespace Tests.UnitTests
 {
             new CustomerViewModel{ Email = "joao@joao.com", FirstName = "Joao",Password = "pwd",SurName ="Oliveira"},
         };
+
+        private void AutoMapperInit()
+        {
+            var mappingConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(profile: new AutoMapperConfiguration());
+            });
+            IMapper mapper = mappingConfig.CreateMapper();
+            _mapper = mapper;
+        }
     }
 }

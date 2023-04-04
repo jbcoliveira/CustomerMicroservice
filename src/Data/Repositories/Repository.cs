@@ -2,6 +2,7 @@
 using Business.Models;
 using Data.Context;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace Data.Repositories
 {
@@ -22,6 +23,10 @@ namespace Data.Repositories
             await SaveChanges();
         }
 
+        public async Task<IQueryable<TEntity>> GetAll()
+        {
+            return DbSet.AsNoTracking();
+        }
         public async Task<TEntity> GetById(int id)
         {
             return await DbSet.FindAsync(id);

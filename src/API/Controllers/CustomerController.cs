@@ -1,6 +1,9 @@
 ﻿using API.ViewModels;
+using AutoMapper;
 using Business.Interfaces.Repositories;
+using Business.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
@@ -9,10 +12,12 @@ namespace API.Controllers
     public class CustomerController : ControllerBase
     {
         private ICustomerRepository _customerRepository { get; set; }
+        private readonly IMapper _mapper;
 
-        public CustomerController(ICustomerRepository customerRepository)
+        public CustomerController(ICustomerRepository customerRepository, IMapper mapper)
         {
             _customerRepository = customerRepository;
+            _mapper = mapper;
         }
 
         // GET: api/<CustomerController>
@@ -20,13 +25,11 @@ namespace API.Controllers
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult Get()
+        public async Task<IActionResult> GetAsync()
         {
-            List<CustomerViewModel> customers = new List<CustomerViewModel>
-            {
-                new CustomerViewModel{ Email = "joao@joao.com", FirstName = "Joao",Password = "pwd",SurName =null},
-                new CustomerViewModel{ Email = "joao@joao.com", FirstName = "Joao",Password = "pwd",SurName =null},
-            };
+            var query = await _customerRepository.GetAll();
+            List<Customer> list = await Task.FromResult(query.ToList());
+            List<CustomerViewModel> customers = _mapper.Map<List<CustomerViewModel>>(list);
 
             return Ok(customers);
         }

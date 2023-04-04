@@ -7,6 +7,7 @@ namespace Business.Interfaces.Repositories
         Task Add(TEntity entity);
 
         Task<TEntity> GetById(int id);
+        Task<IQueryable<TEntity>> GetAll();
 
         Task Update(TEntity entity);
 
