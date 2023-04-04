@@ -3,6 +3,7 @@ using Business.Models;
 using Data.Context;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Linq.Expressions;
 
 namespace Data.Repositories
 {
@@ -32,6 +33,13 @@ namespace Data.Repositories
             return await DbSet.FindAsync(id);
         }
 
+
+        public IQueryable<TEntity> Find(Expression<Func<TEntity, bool>> predicate)
+        {
+            return DbSet.AsNoTracking().Where(predicate);
+        }
+
+       
         public async Task Update(TEntity entity)
         {
             DbSet.Update(entity);
@@ -44,6 +52,12 @@ namespace Data.Repositories
             await SaveChanges();
         }
 
+        public async Task Remove(TEntity entity)
+        {
+            DbSet.Remove(entity);
+            await SaveChanges();
+        }
+
         public async Task<int> SaveChanges()
         {
             return await Db.SaveChangesAsync();
@@ -51,6 +65,6 @@ namespace Data.Repositories
 
         public void Dispose()
         {
-        }
+            }
     }
 }

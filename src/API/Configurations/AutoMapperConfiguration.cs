@@ -8,7 +8,11 @@ namespace API.Configurations
     {
         public AutoMapperConfiguration()
         {
-            CreateMap<Customer, CustomerViewModel>().ReverseMap();
+            CreateMap<Customer, CustomerViewModel>()            
+                .ReverseMap()
+                .ForMember(o => o.Id, opt => opt.Ignore());
+
+            CreateMap<Customer, Customer>().ForMember(o=> o.Id, opt => opt.Ignore());
         }
     }
 }

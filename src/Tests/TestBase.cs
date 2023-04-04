@@ -22,7 +22,7 @@ namespace Tests
             //If you would like to use the same instance of database, set de databasename parameter (ex.: databaseName: Mentoria)
 
             DbContextOptionsBuilder<ApplicationDbContext> optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>()
-                .UseInMemoryDatabase(databaseName: "Mentoria", databaseRoot: new InMemoryDatabaseRoot())
+                .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString(), databaseRoot: new InMemoryDatabaseRoot())
                 .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
                 .EnableSensitiveDataLogging();
 

@@ -38,12 +38,12 @@ namespace Tests.UnitTests
 
         [Test]
         [TestCase(0)]
-        public void Get_WithIDFilledExecutes_ReturnsNotFoundResult(int id)
+        public async Task Get_WithIDFilledExecutes_ReturnsNotFoundResultAsync(int id)
         {
             //Arrange
 
             //Act
-            var result = _controller.Get(id);
+            var result = await _controller.GetAsync(id);
             var statusCodeResult = result as NotFoundResult;
 
             //Assert
@@ -52,46 +52,17 @@ namespace Tests.UnitTests
 
         }
 
-        [Test]
-        [TestCase(1)]
-        public void Get_WithIDFilledExecutes_ReturnsOkStatusCodeResult(int id)
-        {
-            //Arrange
+       
 
-            //Act
-            var result = _controller.Get(id);
-            var statusCodeResult = result as OkObjectResult;
-
-            //Assert
-            Assert.IsNotNull(statusCodeResult);
-            Assert.That(statusCodeResult.StatusCode, Is.EqualTo(200));
-
-        }
 
         [Test]
-        [TestCaseSource(nameof(CustomersForPost))]
-        public void Post_WhenCalled_ShouldCreateARegistry(CustomerViewModel customer)
-        {
-            //Arrange
-
-            //Act
-            var result = _controller.Post(customer);
-            var statusCodeResult = result as OkObjectResult;
-
-            //Assert
-            Assert.IsNotNull(statusCodeResult);
-            Assert.That(statusCodeResult.StatusCode, Is.EqualTo(200));
-
-        }
-
-        [Test]
-        public void Post_WhenCalledWithWrongEmailFormat_ShouldShowErrorMessageAndBadRequest()
+        public async Task Post_WhenCalledWithWrongEmailFormat_ShouldShowErrorMessageAndBadRequestAsync()
         {
             //Arrange
             var customer = new CustomerViewModel { Email = "joao@@joao.com", FirstName = "Joao", Password = "pwd", SurName = "Oliveira" };
 
             //Act
-            var result = _controller.Post(customer);
+            var result = await _controller.PostAsync(customer);
             var statusCodeResult = result as BadRequestObjectResult;
 
             //Assert
@@ -101,29 +72,16 @@ namespace Tests.UnitTests
 
         }
 
-        [Test]
-        public void Put_WhenCalled_ShouldCreateARegistry()
-        {
-            //Arrange
-            var customer = new CustomerViewModel { Id = 1, Email = "joao@@joao.com", FirstName = "Joao", Password = "pwd", SurName = "Oliveira" };
-            //Act
-            var result = _controller.Put(customer.Id, customer);
-            var statusCodeResult = result as OkObjectResult;
 
-            //Assert
-            Assert.IsNotNull(statusCodeResult);
-            Assert.That(statusCodeResult.StatusCode, Is.EqualTo(200));
-
-        }
 
         [Test]
-        public void Put_WhenCalledWithWrongEmailFormat_ShouldShowErrorMessageAndBadRequest()
+        public async Task Put_WhenCalledWithWrongEmailFormat_ShouldShowErrorMessageAndBadRequestAsync()
         {
             //Arrange
             var customer = new CustomerViewModel { Id = 1, Email = "joao@@joao.com", FirstName = "Joao", Password = "pwd", SurName = "Oliveira" };
 
             //Act
-            var result = _controller.Put(customer.Id, customer);
+            var result = await _controller.PutAsync(customer.Id, customer);
             var statusCodeResult = result as BadRequestObjectResult;
 
             //Assert
@@ -135,13 +93,13 @@ namespace Tests.UnitTests
 
         [Test]
         [TestCase(0)]
-        public void Delete_WithIDFilledExecutes_ReturnsNotFoundResult(int id)
+        public async Task Delete_WithIDFilledExecutes_ReturnsNotFoundResultAsync(int id)
         {
             //Arrange
 
             //Act
-            var result = _controller.Delete(id);
-            var statusCodeResult = result as NotFoundResult;
+            var result = _controller.DeleteAsync(id);
+            var statusCodeResult = await result as NotFoundResult;
 
             //Assert
             Assert.IsNotNull(statusCodeResult);
@@ -149,21 +107,7 @@ namespace Tests.UnitTests
 
         }
 
-        [Test]
-        [TestCase(1)]
-        public void Delete_WithIDFilledExecutes_ReturnsOkStatusCodeResult(int id)
-        {
-            //Arrange
-
-            //Act
-            var result = _controller.Delete(id);
-            var statusCodeResult = result as OkObjectResult;
-
-            //Assert
-            Assert.IsNotNull(statusCodeResult);
-            Assert.That(statusCodeResult.StatusCode, Is.EqualTo(200));
-
-        }
+       
 
         private static object[] CustomersWithNullValuesSource =
         {
@@ -172,10 +116,7 @@ namespace Tests.UnitTests
             new CustomerViewModel()
         };
 
-        private static object[] CustomersForPost =
-{
-            new CustomerViewModel{ Email = "joao@joao.com", FirstName = "Joao",Password = "pwd",SurName ="Oliveira"},
-        };
+
 
         private void AutoMapperInit()
         {

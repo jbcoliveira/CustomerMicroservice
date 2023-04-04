@@ -3,7 +3,6 @@ using AutoMapper;
 using Business.Interfaces.Repositories;
 using Business.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
@@ -21,79 +20,150 @@ namespace API.Controllers
         }
 
         // GET: api/<CustomerController>
-        [HttpGet]
+        /// <summary>
+        /// Retrieves all data
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("Get")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> GetAsync()
         {
-            var query = await _customerRepository.GetAll();
-            List<Customer> list = await Task.FromResult(query.ToList());
-            List<CustomerViewModel> customers = _mapper.Map<List<CustomerViewModel>>(list);
+            try
+            {
+                var query = await _customerRepository.GetAll();
+                List<Customer> list = await Task.FromResult(query.ToList());
+                List<CustomerViewModel> customers = _mapper.Map<List<CustomerViewModel>>(list);
 
-            return Ok(customers);
+                return Ok(customers);
+            }
+            catch (Exception)
+            {
+                return BadRequest("Error. Some input is missing or it is in wrong format.");
+            }
         }
 
         // GET api/<CustomerController>/5
-        [HttpGet("{id}")]
+        /// <summary>
+        /// Retrieves data by ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet("Get/{id}")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IActionResult Get(int id)
+        public async Task<IActionResult> GetAsync(int id)
         {
-            var customer = new CustomerViewModel { Id = id, Email = "joao@joao.com", FirstName = "Joao", Password = "pwd", SurName = "" };
+            try
+            {
+                var customer = await _customerRepository.GetById(id);
 
-            if (customer.Id != 1)
-                return NotFound();
+                if (customer == null)
+                    return NotFound();
 
-            return Ok(customer);
+                return Ok(customer);
+            }
+            catch (Exception)
+            {
+                return BadRequest("Error. Some input is missing or it is in wrong format.");
+            }
         }
 
         // POST api/<CustomerController>
-        [HttpPost]
+        /// <summary>
+        /// Insert a new customer
+        /// </summary>
+        /// <param name="customer"></param>
+        /// <returns></returns>
+        [HttpPost("Post")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult Post([FromBody] CustomerViewModel customer)
+        public async Task<IActionResult> PostAsync([FromBody] CustomerViewModel customer)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+            try
+            {
+                if (!ModelState.IsValid)
+                    return BadRequest(ModelState);
 
-            if(!customer.Validate())
+                if (!customer.Validate())
+                    return BadRequest("Error. Some input is missing or it is in wrong format.");
+
+                await _customerRepository.Add(_mapper.Map<Customer>(customer));
+                return Ok(customer);
+            }
+            catch (Exception)
+            {
                 return BadRequest("Error. Some input is missing or it is in wrong format.");
-
-            return Ok(customer);
+            }
         }
 
         // PUT api/<CustomerController>/5
-        [HttpPut("{id}")]
+        /// <summary>
+        /// Update a customer
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="customer"></param>
+        /// <returns></returns>
+        [HttpPut("Put/{id}")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IActionResult Put(int id, [FromBody] CustomerViewModel customer)
+        public async Task<IActionResult> PutAsync(int id, [FromBody] CustomerViewModel customer)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+            try
+            {
+                if (!ModelState.IsValid)
+                    return BadRequest(ModelState);
 
-            if (!customer.Validate())
+                if (!customer.Validate())
+                    return BadRequest("Error. Some input is missing or it is in wrong format.");
+
+                var customerObj = await _customerRepository.GetById(id);
+
+                if (customerObj == null)
+                    return NotFound();
+
+                _mapper.Map(customer, customerObj);
+                await _customerRepository.Update(customerObj);
+
+                return Ok(customerObj);
+            }
+            catch (Exception)
+            {
                 return BadRequest("Error. Some input is missing or it is in wrong format.");
-
-            return Ok();
+            }
         }
 
         // DELETE api/<CustomerController>/5
-        [HttpDelete("{id}")]
+        /// <summary>
+        /// Removes a customer
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpDelete("Delete/{id}")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> DeleteAsync(int id)
         {
-            var customer = new CustomerViewModel { Id = id, Email = "joao@joao.com", FirstName = "Joao", Password = "pwd", SurName = "" };
+            try
+            {
+                Customer customer = await _customerRepository.GetById(id);
 
-            if (customer.Id != 1)
-                return NotFound();
+                if (customer == null)
+                    return NotFound();
 
-            return Ok(customer);
+                await _customerRepository.Remove(customer);
+
+                return Ok(customer);
+            }
+            catch (Exception)
+            {
+                return BadRequest("Error. Some input is missing or it is in wrong format.");
+            }
         }
     }
 }
