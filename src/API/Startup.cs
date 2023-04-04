@@ -37,6 +37,9 @@ namespace API
 
             app.UseHttpsRedirection();
 
+            //Seed Database
+            app.UseItToSeedDatabaseServer();
+
             app.UseAuthorization();
 
             app.MapControllers();
