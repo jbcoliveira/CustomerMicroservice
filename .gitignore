@@ -351,3 +351,4 @@ MigrationBackup/
 /src/API/SQLite/Mentoria.sqlite
 /src/API/SQLite/Mentoria.sqlite-wal
 /src/API/SQLite/Mentoria.sqlite-shm
+/.vscode
