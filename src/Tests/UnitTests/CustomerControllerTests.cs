@@ -4,7 +4,7 @@ using Business.Interfaces.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 
-namespace Tests
+namespace Tests.UnitTests
 {
     [TestFixture]
     public class CustomerControllerTests
@@ -27,10 +27,10 @@ namespace Tests
             //Act
             var result = _controller.Get();
             var statusCodeResult = result as OkObjectResult;
-            
+
             //Assert
             Assert.IsNotNull(statusCodeResult);
-            Assert.That(statusCodeResult.StatusCode,Is.EqualTo(200) );
+            Assert.That(statusCodeResult.StatusCode, Is.EqualTo(200));
 
         }
 
@@ -39,7 +39,7 @@ namespace Tests
         public void Get_WithIDFilledExecutes_ReturnsNotFoundResult(int id)
         {
             //Arrange
-           
+
             //Act
             var result = _controller.Get(id);
             var statusCodeResult = result as NotFoundResult;
@@ -105,7 +105,7 @@ namespace Tests
             //Arrange
             var customer = new CustomerViewModel { Id = 1, Email = "joao@@joao.com", FirstName = "Joao", Password = "pwd", SurName = "Oliveira" };
             //Act
-            var result = _controller.Put(customer.Id,customer);
+            var result = _controller.Put(customer.Id, customer);
             var statusCodeResult = result as OkObjectResult;
 
             //Assert
