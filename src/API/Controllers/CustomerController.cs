@@ -1,7 +1,6 @@
-﻿using Business.Interfaces.Repositories;
+﻿using API.ViewModels;
+using Business.Interfaces.Repositories;
 using Microsoft.AspNetCore.Mvc;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace API.Controllers
 {
@@ -9,45 +8,89 @@ namespace API.Controllers
     [ApiController]
     public class CustomerController : ControllerBase
     {
-
-        private ICustomerRepository _customerRepository { get; set;}
+        private ICustomerRepository _customerRepository { get; set; }
 
         public CustomerController(ICustomerRepository customerRepository)
         {
             _customerRepository = customerRepository;
         }
 
-
         // GET: api/<CustomerController>
         [HttpGet]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult Get()
         {
-            return Ok(new string[] { "value1", "value2" });
+            List<CustomerViewModel> customers = new List<CustomerViewModel>
+            {
+                new CustomerViewModel{ Email = "joao@joao.com", FirstName = "Joao",Password = "pwd",SurName =null},
+                new CustomerViewModel{ Email = "joao@joao.com", FirstName = "Joao",Password = "pwd",SurName =null},
+            };
+
+            return Ok(customers);
         }
 
         // GET api/<CustomerController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public IActionResult Get(int id)
         {
-            return "value";
+            var customer = new CustomerViewModel { Id = id, Email = "joao@joao.com", FirstName = "Joao", Password = "pwd", SurName = "" };
+
+            if (customer.Id != 1)
+                return NotFound();
+
+            return Ok(customer);
         }
 
         // POST api/<CustomerController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public IActionResult Post([FromBody] CustomerViewModel customer)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            if(!customer.Validate())
+                return BadRequest("Error. Some input is missing or it is in wrong format.");
+
+            return Ok(customer);
         }
 
         // PUT api/<CustomerController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public IActionResult Put(int id, [FromBody] CustomerViewModel customer)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            if (!customer.Validate())
+                return BadRequest("Error. Some input is missing or it is in wrong format.");
+
+            return Ok();
         }
 
         // DELETE api/<CustomerController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public IActionResult Delete(int id)
         {
+            var customer = new CustomerViewModel { Id = id, Email = "joao@joao.com", FirstName = "Joao", Password = "pwd", SurName = "" };
+
+            if (customer.Id != 1)
+                return NotFound();
+
+            return Ok(customer);
         }
     }
 }
